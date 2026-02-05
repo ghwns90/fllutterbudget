@@ -1,0 +1,79 @@
+# Misc
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.iml
+*.log
+
+# ----------------------
+# Server (Spring Boot / Gradle)
+# ----------------------
+server/.gradle/
+server/build/
+server/out/
+server/bin/
+server/**/build/
+server/**/*.class
+
+# Ignore Gradle GUI config
+server/gradle-app.setting
+
+# Avoid ignoring Gradle Wrapper jar
+!server/gradle/wrapper/gradle-wrapper.jar
+
+# ----------------------
+# Client (Flutter)
+# ----------------------
+client/.dart_tool/
+client/.flutter-plugins
+client/.flutter-plugins-dependencies
+client/.pub-cache/
+client/build/
+client/.packages
+
+# Symbolication related
+client/app.*.symbols
+
+# Obfuscation related
+client/app.*.map.json
+
+# Linux specific
+client/linux/flutter/ephemeral/
+
+# Windows specific
+client/windows/flutter/ephemeral/
+client/windows/flutter/ephemeral/client.runner.lib
+
+# Web specific
+client/lib/generated_plugin_registrant.dart
+
+# Mac specific
+client/macos/Flutter/ephemeral/
+client/macos/Pods/
+
+# iOS specific
+client/ios/Flutter/App.framework
+client/ios/Flutter/Flutter.framework
+client/ios/Flutter/Generated.xcconfig
+client/ios/Flutter/app.flx
+client/ios/Flutter/app.zip
+client/ios/Flutter/flutter_assets/
+client/ios/ServiceDefinitions.json
+client/ios/Runner/GeneratedPluginRegistrant.*
+client/ios/Pods/
+client/ios/.symlinks/
+
+# Android specific
+client/android/app/libs/
+client/android/.gradle
+client/android/app/src/main/assets/
+
+# Code Generator (json_serializable, riverpod_generator)
+# *.g.dart is generally NOT committed in libraries, 
+# but in Apps it is often committed for convenience.
+# If you want to ignore them, uncomment the line below:
+# **/*.g.dart
+
+
+*.md
