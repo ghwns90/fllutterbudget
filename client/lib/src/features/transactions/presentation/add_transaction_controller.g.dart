@@ -1,29 +1,30 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'transaction_list_provider.dart';
+part of 'add_transaction_controller.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$transactionListHash() => r'847d33fe3d4741a33d0113b0e7accf4cbc89c62f';
+String _$addTransactionControllerHash() =>
+    r'f01748b364975f0b7e3c75043d506e78f69c2aa9';
 
-/// See also [TransactionList].
-@ProviderFor(TransactionList)
-final transactionListProvider =
-    AutoDisposeAsyncNotifierProvider<
-      TransactionList,
-      List<TransactionModel>
+/// See also [AddTransactionController].
+@ProviderFor(AddTransactionController)
+final addTransactionControllerProvider =
+    AutoDisposeNotifierProvider<
+      AddTransactionController,
+      AddTransactionState
     >.internal(
-      TransactionList.new,
-      name: r'transactionListProvider',
+      AddTransactionController.new,
+      name: r'addTransactionControllerProvider',
       debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
           ? null
-          : _$transactionListHash,
+          : _$addTransactionControllerHash,
       dependencies: null,
       allTransitiveDependencies: null,
     );
 
-typedef _$TransactionList = AutoDisposeAsyncNotifier<List<TransactionModel>>;
+typedef _$AddTransactionController = AutoDisposeNotifier<AddTransactionState>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

@@ -75,5 +75,5 @@ client/android/app/src/main/assets/
 # If you want to ignore them, uncomment the line below:
 # **/*.g.dart
 
-
 *.md
+!firstflutter.md

@@ -13,6 +13,7 @@ public class TransactionResponse {
   private final String title;
   private final BigDecimal amount;
   private final String type;
+  private final Long categoryId;
   private final String categoryName;
 
   private final String categoryIcon;
@@ -29,10 +30,12 @@ public class TransactionResponse {
     this.memo = transaction.getMemo();
 
     // 연관된 카테고리 정보 가져오기
-    if(transaction.getCategory() != null) {
+    if (transaction.getCategory() != null) {
+      this.categoryId = transaction.getCategory().getId();
       this.categoryName = transaction.getCategory().getName();
       this.categoryIcon = transaction.getCategory().getIcon();
     } else {
+      this.categoryId = null; // or default ID
       this.categoryName = "미분류";
       this.categoryIcon = "❓";
     }

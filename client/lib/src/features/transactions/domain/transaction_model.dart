@@ -8,6 +8,7 @@ class TransactionModel {
   final String title;
   final int amount;
   final String type;
+  final int? categoryId;
   final String categoryName;
   final String categoryIcon;
   final String transactionAt;
@@ -18,6 +19,7 @@ class TransactionModel {
     required this.title,
     required this.amount,
     required this.type,
+    this.categoryId,
     required this.categoryName,
     required this.categoryIcon,
     required this.transactionAt,
@@ -25,8 +27,8 @@ class TransactionModel {
   });
 
   // JSON -> 객체 변환
-  factory TransactionModel.fromJson(Map<String, dynamic> json) => 
-    _$TransactionModelFromJson(json);
+  factory TransactionModel.fromJson(Map<String, dynamic> json) =>
+      _$TransactionModelFromJson(json);
 }
 
 @JsonSerializable()
@@ -48,8 +50,7 @@ class TransactionCreateRequest {
   });
 
   // 객체 -> JSON 변환
-  Map<String, dynamic> toJson() => 
-    _$TransactionCreateRequestToJson(this);
+  Map<String, dynamic> toJson() => _$TransactionCreateRequestToJson(this);
 }
 
 @JsonSerializable()
@@ -58,10 +59,8 @@ class CategoryModel {
   final String name;
   final String icon;
 
-  CategoryModel({
-    required this.id, required this.name, required this.icon,
-  });
+  CategoryModel({required this.id, required this.name, required this.icon});
 
-  factory CategoryModel.fromJson(Map<String, dynamic> json) => _$CategoryModelFromJson(json);
+  factory CategoryModel.fromJson(Map<String, dynamic> json) =>
+      _$CategoryModelFromJson(json);
 }
-

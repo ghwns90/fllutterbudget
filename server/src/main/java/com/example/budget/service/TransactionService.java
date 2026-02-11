@@ -63,4 +63,30 @@ public class TransactionService {
         .collect(Collectors.toList());
   }
 
+  // 삭제 (Delete)
+  @Transactional
+  public void deleteTransaction(Long id) {
+    transactionRepository.deleteById(id);
+  }
+
+  // 수정 (Update)
+  @Transactional
+  public TransactionResponse updateTransaction(Long id, TransactionCreateRequest request) {
+    Transaction transaction = transactionRepository.findById(id)
+        .orElseThrow(() -> new IllegalArgumentException("해당 내역을 찾을 수 없습니다. (id: " + id + ")"));
+
+    // 카테고리 조회
+    Category category = categoryRepository.findById(request.categoryId())
+        .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 카테고리입니다."));
+
+    transaction.setTitle(request.title());
+    transaction.setAmount(request.amount());
+    transaction.setType(request.type());
+    transaction.setCategory(category);
+    transaction.setMemo(request.memo());
+    transaction.setTransactionAt(request.transactionAt());
+
+    return new TransactionResponse(transaction);
+  }
+
 }

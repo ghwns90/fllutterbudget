@@ -6,7 +6,7 @@ part of 'transaction_repository.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$dioHash() => r'5cdba2e50667a95e5d7a257e5a597ee0d33748b4';
+String _$dioHash() => r'66f123b6e658f9eb19ea8bcddf2d2c93eb3c31d7';
 
 /// See also [dio].
 @ProviderFor(dio)
@@ -24,7 +24,7 @@ final dioProvider = AutoDisposeProvider<Dio>.internal(
 // ignore: unused_element
 typedef DioRef = AutoDisposeProviderRef<Dio>;
 String _$transactionRepositoryHash() =>
-    r'6db0c4dd5f5f708bdfadab5710707cd7e0fa9a90';
+    r'2a995a4e1b0fbd2d10fbc1b41366797f9f23670e';
 
 /// See also [transactionRepository].
 @ProviderFor(transactionRepository)
@@ -43,7 +43,7 @@ final transactionRepositoryProvider =
 // ignore: unused_element
 typedef TransactionRepositoryRef =
     AutoDisposeProviderRef<TransactionRepository>;
-String _$categoryListHash() => r'69389804ae6bb3cb8265a85a0dc44f60e06ad628';
+String _$categoryListHash() => r'264fec058de89c5fe1767f4c85a0656f5ca152ad';
 
 /// See also [categoryList].
 @ProviderFor(categoryList)

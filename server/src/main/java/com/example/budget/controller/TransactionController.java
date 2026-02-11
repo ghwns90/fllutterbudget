@@ -2,9 +2,11 @@ package com.example.budget.controller;
 
 import java.util.List;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -41,6 +43,21 @@ public class TransactionController {
   @GetMapping("/{id}")
   public TransactionResponse getTransaction(@PathVariable("id") Long id) {
     return transactionService.getTransaction(id);
+  }
+
+  // 거래 내역 삭제 (DELETE, /api/transactions/{id})
+  @DeleteMapping("/{id}")
+  public void deleteTransaction(@PathVariable("id") Long id) {
+    transactionService.deleteTransaction(id);
+  }
+
+  // 거래 내역 수정 (PUT, /api/transactions/{id})
+  @PutMapping("/{id}")
+  public TransactionResponse updateTransaction(
+    @PathVariable("id") Long id,
+    @RequestBody @Valid TransactionCreateRequest request
+  ) {
+    return transactionService.updateTransaction(id, request);
   }
 
 }
