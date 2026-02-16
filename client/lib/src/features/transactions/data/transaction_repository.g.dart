@@ -6,23 +6,6 @@ part of 'transaction_repository.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$dioHash() => r'66f123b6e658f9eb19ea8bcddf2d2c93eb3c31d7';
-
-/// See also [dio].
-@ProviderFor(dio)
-final dioProvider = AutoDisposeProvider<Dio>.internal(
-  dio,
-  name: r'dioProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$dioHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef DioRef = AutoDisposeProviderRef<Dio>;
 String _$transactionRepositoryHash() =>
     r'2a995a4e1b0fbd2d10fbc1b41366797f9f23670e';
 

@@ -18,6 +18,11 @@ spring:
     init:
       mode: always
       encoding: UTF-8
+  config:
+    import: "optional:file:.env[.properties]" # .env파일을 설정값으로 가져옴
 
 server:
   port: 8080
+
+jwt:
+  secret: ${SECRET_KEY}

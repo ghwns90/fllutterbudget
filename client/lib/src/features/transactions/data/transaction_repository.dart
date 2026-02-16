@@ -1,22 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:flutter/foundation.dart'; // kIsWeb 사용을 위해 추가
+import '../../../core/network/dio_provider.dart';
 import '../domain/transaction_model.dart';
 
 part 'transaction_repository.g.dart';
-
-// Dio 객체 제공자 (싱글톤처럼 관리)
-@riverpod
-Dio dio(Ref ref) {
-  // 웹(Chrome)이거나 iOS면 localhost, 안드로이드면 10.0.2.2
-  final String baseUrl = kIsWeb
-      ? 'http://localhost:8080'
-      : 'http://10.0.2.2:8080';
-
-  final dio = Dio(BaseOptions(baseUrl: baseUrl));
-  return dio;
-}
 
 // Repository 제공자
 @riverpod

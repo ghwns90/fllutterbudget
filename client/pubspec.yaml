@@ -46,6 +46,8 @@ dependencies:
   # 4. JSON 변환 & 유틸
   json_annotation: ^4.9.0
   intl: ^0.20.0 # 날짜 포맷팅 (yyyy-MM-dd)
+  # 5. 토큰 저장
+  flutter_secure_storage: ^9.2.3
 
 dev_dependencies:
   flutter_test:

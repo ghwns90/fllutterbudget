@@ -5,6 +5,7 @@ Thumbs.db
 .vscode/
 *.iml
 *.log
+.env
 
 # ----------------------
 # Server (Spring Boot / Gradle)
