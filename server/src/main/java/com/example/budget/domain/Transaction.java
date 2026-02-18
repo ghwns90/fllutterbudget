@@ -38,5 +38,9 @@ public class Transaction {
     @JoinColumn(name = "category_id")
     private Category category;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
     // 생성자 패턴 대신 Builder 패턴 추천 (추후 적용)
 }

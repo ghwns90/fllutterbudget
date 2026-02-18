@@ -17,7 +17,7 @@ class AuthRepository {
 
   Future<Map<String, dynamic>> login(String email, String password) async {
     final response = await _dio.post(
-      '/auth/login',
+      '/api/auth/login',
       data: {'email': email, 'password': password},
     );
     return response.data; // {accessToken : "...", refreshToken: "..."}
@@ -29,7 +29,7 @@ class AuthRepository {
     String name,
   ) async {
     final response = await _dio.post(
-      '/auth/signup',
+      '/api/auth/signup',
       data: {'email': email, 'password': password, 'name': name},
     );
     return response.data;
@@ -37,7 +37,7 @@ class AuthRepository {
 
   Future<Map<String, dynamic>> refresh(String refreshToken) async {
     final response = await _dio.post(
-      '/auth/refresh',
+      '/api/auth/refresh',
       data: {'refreshToken': refreshToken},
     );
     return response.data;
