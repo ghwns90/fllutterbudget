@@ -18,8 +18,10 @@ class TokenStorage {
     required String accessToken,
     required String refreshToken,
   }) async {
+    print('💾 [TokenStorage] Saving tokens...');
     await _storage.write(key: _accessTokenKey, value: accessToken);
     await _storage.write(key: _refreshTokenKey, value: refreshToken);
+    print('💾 [TokenStorage] Tokens saved.');
   }
 
   // accesstoken 읽기

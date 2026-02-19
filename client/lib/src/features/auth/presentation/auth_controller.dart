@@ -21,7 +21,7 @@ class AuthController extends _$AuthController {
   }
 
   Future<void> login(String email, String password) async {
-    state = const AsyncValue.loading();
+    // state = const AsyncValue.loading(); // 로딩 상태 제거 (UI에서 로컬 관리)
     try {
       final repo = ref.read(authRepositoryProvider);
       final tokens = await repo.login(email, password);
@@ -34,8 +34,9 @@ class AuthController extends _$AuthController {
           );
 
       state = const AsyncValue.data(AuthStatus.authenticated);
-    } catch (e, st) {
-      state = AsyncValue.error(e, st);
+    } catch (e) {
+      // 에러 발생 시 상태를 'Unauthenticated'로 원복해야 라우터가 튕기지 않음
+      state = const AsyncValue.data(AuthStatus.unauthenticated);
       rethrow; // UI에서 에러 처리할 수 있게
     }
   }

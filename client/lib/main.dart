@@ -6,6 +6,8 @@ import 'src/features/transactions/presentation/transaction_list_screen.dart';
 import 'src/core/router/router.dart';
 
 void main() async {
+  // 플러터 앱이 Native(운영체제)와 대화할 준비를 확실히 마칠 때 까지 기다려!
+  WidgetsFlutterBinding.ensureInitialized();
   // 날짜 포맷팅 초기화 (한국어 'ko')
   await initializeDateFormatting('ko', null);
   runApp(const ProviderScope(child: MyApp())); // ProviderScope 필수

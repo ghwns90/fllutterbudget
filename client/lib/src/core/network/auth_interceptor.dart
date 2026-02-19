@@ -16,6 +16,7 @@ class AuthInterceptor extends Interceptor {
     // 헤더에 토큰 추가
     try {
       final token = await ref.read(tokenStorageProvider).getAccessToken();
+      print('🔑 [Interceptor] Token injected: ${token != null ? "YES" : "NO"}');
 
       if (token != null) {
         options.headers['Authorization'] = 'Bearer $token';
@@ -30,6 +31,12 @@ class AuthInterceptor extends Interceptor {
     if (err.response?.statusCode == 401) {
       // 이미 리프레시 요청이었다면(무한루프 방지)
       if (err.requestOptions.path.contains('/refresh')) {
+        return handler.next(err);
+      }
+
+      // 로그인/회원가입 실패(401)는 토큰 만료가 아니라 비번 틀린거임 -> 인터셉트 X
+      if (err.requestOptions.path.contains('/login') || 
+          err.requestOptions.path.contains('/signup')) {
         return handler.next(err);
       }
 

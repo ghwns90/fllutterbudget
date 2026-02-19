@@ -1,6 +1,7 @@
 package com.example.budget.repository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.math.BigDecimal;
 import com.example.budget.domain.Transaction;
 import com.example.budget.domain.TransactionType;
@@ -10,10 +11,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import com.example.budget.dto.stat.CategoryStatDto;
-import java.util.List;
+
 
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
+
+    List<Transaction> findAllByUserId(Long userId);
   
     // 특정 기간 동안의 수입/지출 합계 조회
     @Query("SELECT SUM(t.amount) FROM Transaction t "

@@ -2,6 +2,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../data/transaction_repository.dart';
 import '../domain/transaction_model.dart';
 import 'transaction_list_provider.dart';
+import '../../dashboard/presentation/dashboard_controller.dart';
 
 part 'add_transaction_controller.g.dart';
 
@@ -44,6 +45,7 @@ class AddTransactionController extends _$AddTransactionController {
 
       // 성공 시 리스트 갱신
       ref.invalidate(transactionListProvider);
+      ref.invalidate(dashboardControllerProvider);
       state = AddTransactionState(isLoading: false);
       return true;
     } catch (e) {

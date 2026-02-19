@@ -2,6 +2,7 @@ package com.example.budget.controller;
 
 import java.util.List;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,17 +27,22 @@ public class TransactionController {
   private final TransactionService transactionService;
 
   // 거래 내역 기록 (POST, /api/transactions)
+  // 로그인한 유저 정보(userId)를 Service에 전달
   @PostMapping
   public TransactionResponse createTransaction(
+    @AuthenticationPrincipal Long userId,
     @RequestBody @Valid TransactionCreateRequest request
   ) {
-    return transactionService.createTransaction(request);
+    return transactionService.createTransaction(userId, request);
   }
 
   // 거래 내역 목록 조회 (GET, /api/transactions)
+  // 로그인한 유저의 내역만 조회
   @GetMapping
-  public List<TransactionResponse> getTransactions() {
-    return transactionService.getTransactions();
+  public List<TransactionResponse> getTransactions(
+    @AuthenticationPrincipal Long userId
+  ) {
+    return transactionService.getTransactions(userId);
   }
 
   // 거래 내역 상세 조회 (GET, /api/transactions/{id})

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../ui/scaffold_with_navbar.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../features/auth/presentation/auth_controller.dart';
 import '../../features/auth/presentation/login_screen.dart';
 import '../../features/auth/presentation/signup_screen.dart';
 import '../../features/transactions/presentation/transaction_list_screen.dart';
+import '../../features/dashboard/presentation/dashboard_screen.dart';
 
 part 'router.g.dart';
 
@@ -21,9 +23,13 @@ GoRouter router(RouterRef ref) {
     // 리다이렉트 로직
     redirect: (context, state) {
       // 로딩중이면 아무것도 안함
-      if(authStatus is AsyncLoading) return null;
+      if(authStatus is AsyncLoading) {
+        print('🚦 [Router] AuthStatus is Loading...');
+        return null;
+      }
 
       final isAuthenticated = authStatus.value == AuthStatus.authenticated;
+      print('🚦 [Router] AuthStatus: ${authStatus.value}, isAuthenticated: $isAuthenticated');
       final isLoginRequest = state.uri.path == '/login';
       final isSignupRequest = state.uri.path == '/signup';
 
@@ -41,11 +47,6 @@ GoRouter router(RouterRef ref) {
     },
     routes: [
       GoRoute(
-        path: '/',
-        name: 'home',
-        builder: (context, state) => const TransactionListScreen(),
-      ),
-      GoRoute(
         path: '/login',
         name: 'login',
         builder: (context, state) => const LoginScreen(),
@@ -54,6 +55,32 @@ GoRouter router(RouterRef ref) {
         path: '/signup',
         name: 'signup',
         builder: (context, state) => const SignUpScreen(),
+      ),
+
+      // 메뉴바가 있는 화면들
+      StatefulShellRoute.indexedStack(
+        builder: (context, state, navigationShell) {
+          return ScaffoldWithNavBar(navigationShell: navigationShell);
+        },
+        branches: [
+          // 1번 탭 : 가계부 목록
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/', 
+                builder: (context, state) => const TransactionListScreen(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/dashboard',
+                builder: (context, state) => DashboardScreen(),
+              ),
+            ],
+          ),
+        ],
       ),
     ],
   );

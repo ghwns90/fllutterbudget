@@ -15,6 +15,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   final _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
+  bool _isLoading = false;
+
   @override
   void dispose() {
     _emailController.dispose();
@@ -24,6 +26,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   Future<void> _login() async {
     if (_formKey.currentState!.validate()) {
+      setState(() => _isLoading = true);
       try {
         await ref
             .read(authControllerProvider.notifier)
@@ -35,82 +38,97 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             context,
           ).showSnackBar(SnackBar(content: Text('로그인 실패: ${e.toString()}')));
         }
+      } finally {
+        if (mounted) {
+            setState(() => _isLoading = false);
+        }
       }
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final authState = ref.watch(authControllerProvider);
-    final isLoading = authState is AsyncLoading;
+    // final authState = ref.watch(authControllerProvider);
+    // final isLoading = authState is AsyncLoading;
+    final isLoading = _isLoading;
 
     return Scaffold(
-      body: Center(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(24),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                const Icon(
-                  Icons.account_balance_wallet,
-                  size: 80,
-                  color: Colors.green,
+      body: Stack(
+        children: [
+          Center(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(24),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    const Icon(
+                      Icons.account_balance_wallet,
+                      size: 80,
+                      color: Colors.green,
+                    ),
+                    const SizedBox(height: 24),
+                    const Text(
+                      'Budget App',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 48),
+                    TextFormField(
+                      controller: _emailController,
+                      decoration: const InputDecoration(
+                        labelText: '이메일',
+                        border: OutlineInputBorder(),
+                        prefixIcon: Icon(Icons.email),
+                      ),
+                      validator: (value) => value != null && value.contains('@')
+                          ? null
+                          : '이메일 형식을 확인해주세요',
+                    ),
+                    const SizedBox(height: 24),
+                    TextFormField(
+                      controller: _passwordController,
+                      decoration: const InputDecoration(
+                        labelText: '비밀번호',
+                        border: OutlineInputBorder(),
+                        prefixIcon: Icon(Icons.lock),
+                      ),
+                      obscureText: true,
+                      validator: (value) => value != null && value.length >= 4
+                          ? null
+                          : '4자 이상 입력해주세요',
+                    ),
+                    const SizedBox(height: 24),
+                    ElevatedButton(
+                      onPressed: isLoading ? null : _login,
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        backgroundColor: Colors.green,
+                        foregroundColor: Colors.white,
+                      ),
+                      child: const Text('로그인', style: TextStyle(fontSize: 18)),
+                    ),
+                    const SizedBox(height: 16),
+                    TextButton(
+                      onPressed: () => context.push('/signup'),
+                      child: const Text('계정이 없으신가요? 회원가입'),
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 24),
-                const Text(
-                  'Budget App',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 48),
-                TextFormField(
-                  controller: _emailController,
-                  decoration: const InputDecoration(
-                    labelText: '이메일',
-                    border: OutlineInputBorder(),
-                    prefixIcon: Icon(Icons.email),
-                  ),
-                  validator: (value) => value != null && value.contains('@')
-                      ? null
-                      : '이메일 형식을 확인해주세요',
-                ),
-                const SizedBox(height: 24),
-                TextFormField(
-                  controller: _passwordController,
-                  decoration: const InputDecoration(
-                    labelText: '비밀번호',
-                    border: OutlineInputBorder(),
-                    prefixIcon: Icon(Icons.lock),
-                  ),
-                  obscureText: true,
-                  validator: (value) => value != null && value.length >= 4
-                      ? null
-                      : '4자 이상 입력해주세요',
-                ),
-                const SizedBox(height: 24),
-                ElevatedButton(
-                  onPressed: isLoading ? null : _login,
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    backgroundColor: Colors.green,
-                    foregroundColor: Colors.white,
-                  ),
-                  child: isLoading
-                      ? const CircularProgressIndicator(color: Colors.white)
-                      : const Text('로그인', style: TextStyle(fontSize: 18)),
-                ),
-                const SizedBox(height: 16),
-                TextButton(
-                  onPressed: () => context.push('/signup'),
-                  child: const Text('계정이 없으신가요? 회원가입'),
-                ),
-              ],
+              ),
             ),
           ),
-        ),
+          // 로딩 오버레이 (화면 전체 막기)
+          if (isLoading)
+            Container(
+              color: Colors.black54,
+              child: const Center(
+                child: CircularProgressIndicator(color: Colors.white),
+              ),
+            ),
+        ],
       ),
     );
   }
