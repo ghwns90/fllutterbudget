@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.example.budget.repository.TransactionRepository;
 import com.example.budget.domain.TransactionType;
+import com.example.budget.dto.TransactionResponse;
 import com.example.budget.dto.stat.CategoryStatDto;
+import com.example.budget.dto.stat.DailyStatDto;
 import com.example.budget.dto.stat.DashboardResponse;
 
 import java.util.stream.Collectors;
@@ -70,6 +72,28 @@ public class StatService {
                 balance,
                 categoryStats
         );
+    }
+
+    // 일별 추이 데이터
+    public List<DailyStatDto> getDailyTrend(Long userId, YearMonth yearMonth) {
+        LocalDateTime startDate = yearMonth.atDay(1).atStartOfDay();
+        LocalDateTime endDate = yearMonth.atEndOfMonth().atTime(java.time.LocalTime.MAX);
+
+        return transactionRepository.findDailyStats(userId, startDate, endDate);
+    }
+
+    // 탭 리스트 데이터
+    public List<TransactionResponse> getHistory(Long userId, YearMonth yearMonth, TransactionType type) {
+        LocalDateTime startDate = yearMonth.atDay(1).atStartOfDay();
+        LocalDateTime endDate = yearMonth.atEndOfMonth().atTime(java.time.LocalTime.MAX);
+
+        return transactionRepository
+                .findByUserIdAndTypeAndTransactionAtBetweenOrderByTransactionAtDesc(
+                        userId, type, startDate, endDate)
+                .stream()
+                .map(TransactionResponse::new)
+                .collect(Collectors.toList());
+
     }
 
 }

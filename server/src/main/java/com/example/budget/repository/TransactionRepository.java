@@ -11,6 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import com.example.budget.dto.stat.CategoryStatDto;
+import com.example.budget.dto.stat.DailyStatDto;
 
 
 @Repository
@@ -42,4 +43,26 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
         @Param("startDate") LocalDateTime startDate,
         @Param("endDate") LocalDateTime endDate
     );
+
+    // 특정 기간 + 타입별 조회(최신순)
+    List<Transaction> findByUserIdAndTypeAndTransactionAtBetweenOrderByTransactionAtDesc(
+        Long userId,
+        TransactionType type,
+        LocalDateTime startDate,
+        LocalDateTime endDate
+    );
+
+    // 일별 지출 추이
+    @Query("SELECT new com.example.budget.dto.stat.DailyStatDto(DAY(t.transactionAt), SUM(t.amount)) " +
+           "FROM Transaction t " +
+           "WHERE t.user.id = :userId AND t.type = 'EXPENSE' " +
+           "AND t.transactionAt BETWEEN :startDate AND :endDate " +
+           "GROUP BY DAY(t.transactionAt) " +
+           "ORDER BY DAY(t.transactionAt)")
+    List<DailyStatDto> findDailyStats(
+        @Param("userId") Long userId,
+        @Param("startDate") LocalDateTime startDate,
+        @Param("endDate") LocalDateTime endDate
+    );
+    
 }

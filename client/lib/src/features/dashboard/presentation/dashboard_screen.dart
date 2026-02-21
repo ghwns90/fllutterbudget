@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import '../data/dashboard_response.dart';
 import 'dashboard_controller.dart';
+import 'dashboard_chart.dart';
+import 'history_list.dart'; 
 
 class DashboardScreen extends ConsumerWidget {
   DashboardScreen({super.key});
@@ -15,20 +17,54 @@ class DashboardScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(title: const Text('대시보드'), centerTitle: true),
-      body: Column(
-        children: [
-          // 1. Month Picker
-          _buildMonthPicker(ref, currentMonth),
-
-          // 2. Content
-          Expanded(
-            child: dashboardState.when(
-              data: (data) => _buildDashboardContent(context, data),
-              loading: () => const Center(child: CircularProgressIndicator()),
-              error: (err, stack) => Center(child: Text('Error: $err')),
+      body: DefaultTabController(
+        length: 2,
+        child: Column(
+          children: [
+            _buildMonthPicker(ref, currentMonth),
+            Expanded(
+              flex: 4,
+              child: dashboardState.when(
+                data: (data) => SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      _buildSummaryCard(data),
+                      const SizedBox(height: 16),
+                      // 일별 지출 추이 그래프
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: DashboardChart(yearMonth: DateFormat('yyyy-MM').format(currentMonth)),
+                      ),
+                    ],
+                  ),
+                ), 
+                loading: () => const Center(child: CircularProgressIndicator()),
+                error: (e, s) => Center(child: Text('Error: $e')),
+              ),
             ),
-          ),
-        ],
+
+            // 탭바
+            const TabBar(
+              tabs: [
+                Tab(text: '지출 내역'),
+                Tab(text: '수입 내역'),
+              ],
+              labelColor: Colors.green,
+              unselectedLabelColor: Colors.grey,
+              indicatorColor: Colors.green,
+            ),
+            // 탭 내용
+            Expanded(
+              flex: 3,
+              child: TabBarView(
+                children: [
+                  HistoryList(yearMonth: DateFormat('yyyy-MM').format(currentMonth), type:'EXPENSE'),
+                  HistoryList(yearMonth: DateFormat('yyyy-MM').format(currentMonth), type:'INCOME'),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -7,9 +7,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.budget.domain.TransactionType;
+import com.example.budget.dto.TransactionResponse;
+import com.example.budget.dto.stat.DailyStatDto;
 import com.example.budget.dto.stat.DashboardResponse;
 import com.example.budget.service.StatService;
 import java.time.YearMonth;
+import java.util.List;
 
 import lombok.RequiredArgsConstructor;
 
@@ -33,5 +37,22 @@ public class StatController {
         }
 
         return statService.getMonthlyDashboard(userId, yearMonth);
+    }
+
+    @GetMapping("/trend")
+    public List<DailyStatDto> getTrend(
+        @AuthenticationPrincipal Long userId,
+        @RequestParam @DateTimeFormat(pattern = "yyyy-MM") YearMonth yearMonth
+    ) {
+        return statService.getDailyTrend(userId, yearMonth);
+    }
+
+    @GetMapping("/history")
+    public List<TransactionResponse> getHistory(
+        @AuthenticationPrincipal Long userId,
+        @RequestParam @DateTimeFormat(pattern = "yyyy-MM") YearMonth yearMonth,
+        @RequestParam TransactionType type
+    ) {
+        return statService.getHistory(userId, yearMonth, type);
     }
 }

@@ -42,5 +42,15 @@ class DashboardResponse {
     );
   }
 
+}
 
+class DailyStat {
+  final int day;
+  final double amount;
+
+  DailyStat({required this.day, required this.amount});
+
+  factory DailyStat.fromJson(Map<String, dynamic> json) {
+    return DailyStat(day: json['day'] as int, amount: (json['amount'] as num).toDouble());
+  } 
 }
