@@ -6,6 +6,7 @@ import '../data/dashboard_response.dart';
 import 'dashboard_controller.dart';
 import 'dashboard_chart.dart';
 import 'history_list.dart'; 
+import 'ai_advisor_widget.dart';
 
 class DashboardScreen extends ConsumerWidget {
   DashboardScreen({super.key});
@@ -25,19 +26,7 @@ class DashboardScreen extends ConsumerWidget {
             Expanded(
               flex: 4,
               child: dashboardState.when(
-                data: (data) => SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      _buildSummaryCard(data),
-                      const SizedBox(height: 16),
-                      // 일별 지출 추이 그래프
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: DashboardChart(yearMonth: DateFormat('yyyy-MM').format(currentMonth)),
-                      ),
-                    ],
-                  ),
-                ), 
+                data: (data) => _buildDashboardContent(context, data, DateFormat('yyyy-MM').format(currentMonth)),
                 loading: () => const Center(child: CircularProgressIndicator()),
                 error: (e, s) => Center(child: Text('Error: $e')),
               ),
@@ -96,13 +85,22 @@ class DashboardScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildDashboardContent(BuildContext context, DashboardResponse data) {
+  Widget _buildDashboardContent(BuildContext context, DashboardResponse data, String yearMonth) {
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
       child: Column(
         children: [
           _buildSummaryCard(data), // 상단 요약
-          const SizedBox(height: 32),
+          const SizedBox(height: 16),
+          // AI 비서 위젯 추가
+          AiAdvisorWidget(yearMonth: yearMonth),
+          const SizedBox(height: 16),
+          // 일별 지출 추이 그래프
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: DashboardChart(yearMonth: yearMonth),
+          ),
+          const SizedBox(height: 16),
           if (data.categoryStats.isNotEmpty) ...[
             const Text(
               '지출 분석',

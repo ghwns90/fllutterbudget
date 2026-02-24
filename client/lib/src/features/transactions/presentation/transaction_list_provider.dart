@@ -2,6 +2,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../data/transaction_repository.dart';
 import '../domain/transaction_model.dart';
+import '../../dashboard/presentation/dashboard_controller.dart';
+import '../../dashboard/presentation/dashboard_chart.dart';
+import '../../dashboard/presentation/history_list.dart';
 
 part 'transaction_list_provider.g.dart';
 
@@ -34,6 +37,11 @@ class TransactionList extends _$TransactionList {
       // 2. 서버에 삭제 요청
       final repository = ref.read(transactionRepositoryProvider);
       await repository.deleteTransaction(id);
+
+      // 3. 대시보드 상태 동기화 (업데이트)
+      ref.invalidate(dashboardControllerProvider);
+      ref.invalidate(trendProvider);
+      ref.invalidate(historyProvider);
     } catch (e) {
       // 3. 실패하면 롤백 (원래 데이터로 복구)
       state = AsyncValue.data(previousState);

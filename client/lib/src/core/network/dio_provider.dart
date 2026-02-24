@@ -14,8 +14,8 @@ Dio dio(DioRef ref) {
 
   final dio = Dio(BaseOptions(
     baseUrl: baseUrl,
-    connectTimeout: const Duration(seconds: 5),
-    receiveTimeout: const Duration(seconds: 3),
+    connectTimeout: const Duration(seconds: 15),
+    receiveTimeout: const Duration(seconds: 15),
   ));
 
   // 인터셉터 추가 (토큰 자동 주입 & 갱신)

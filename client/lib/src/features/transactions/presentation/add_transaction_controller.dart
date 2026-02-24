@@ -3,7 +3,8 @@ import '../data/transaction_repository.dart';
 import '../domain/transaction_model.dart';
 import 'transaction_list_provider.dart';
 import '../../dashboard/presentation/dashboard_controller.dart';
-
+import '../../dashboard/presentation/dashboard_chart.dart';
+import '../../dashboard/presentation/history_list.dart';
 part 'add_transaction_controller.g.dart';
 
 // 1. 상태 클래스 (State)
@@ -46,6 +47,8 @@ class AddTransactionController extends _$AddTransactionController {
       // 성공 시 리스트 갱신
       ref.invalidate(transactionListProvider);
       ref.invalidate(dashboardControllerProvider);
+      ref.invalidate(trendProvider);
+      ref.invalidate(historyProvider);
       state = AddTransactionState(isLoading: false);
       return true;
     } catch (e) {
@@ -79,6 +82,9 @@ class AddTransactionController extends _$AddTransactionController {
       await repo.updateTransaction(id, request);
 
       ref.invalidate(transactionListProvider);
+      ref.invalidate(dashboardControllerProvider);
+      ref.invalidate(trendProvider);
+      ref.invalidate(historyProvider);
       state = AddTransactionState(isLoading: false);
       return true;
     } catch (e) {
